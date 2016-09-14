@@ -1,0 +1,119 @@
+Created on Fri Apr 15 19:06:13 2016
+
+@author: sai teja kamma
+"""
+
+import copy
+from random import Random
+import numpy as np
+import math
+
+seed = 12345
+myPRNG = Random(seed)
+
+# Define all the variables of knapsack problem
+
+n=200
+
+costs = []
+
+for i in xrange(0,n):
+    costs.append(myPRNG.randint(10,100))
+
+weights = []
+
+for i in xrange(0,n):
+    weights.append(myPRNG.randint(5,15))
+
+maxWeight = 4*n
+
+# Define functions
+
+def evaluate(x):
+    
+    a = np.array(x)
+    b = np.array(costs)
+    c = np.array(weights)
+    
+    value = np.dot(a,b)
+    totalWeight = np.dot(a,c)
+    
+    if totalWeight > maxWeight:
+        value = -1
+        
+    return value
+    
+def neighborhood(x):
+    
+    nbrhood = []
+    
+    for i in xrange(0,n):
+        nbrhood.append(x[:])
+        if nbrhood[i][i] == 1:
+            nbrhood[i][i] = 0
+        else:
+            nbrhood[i][i] = 1
+      
+    return nbrhood
+
+def temp_curr(maxT, n):
+    curr_T = maxT-(n*2)
+    return curr_T
+
+
+    
+
+# Now let's create starting solution
+
+x_curr = []
+
+
+for i in xrange(0,n):
+    
+    if myPRNG.random() < 0.7:
+        x_curr.append(0)
+    else:
+        x_curr.append(1)
+
+
+x_best = x_curr[:]   
+f_curr = evaluate(x_curr)
+f_best = f_curr
+
+# Simulated Annealing Pars
+
+maxT = 10000                    # this is the maximum Temp 
+M_k = 10                        # no of iterations per temp
+maxIter = 200                   # max iterations that was done
+
+for k in range(1, maxIter):     
+    
+    T = temp_curr(maxT, k)      # get a temp update for the iteration
+    
+    m = 0                       # set m to be zero
+    while m < M_k:              # iterate until max iteration
+        s = myPRNG.choice(neighborhood(x_curr))     # choose twenty different values from the neighborhood
+        
+        if evaluate(s) > f_best:                # if an improvement was found
+            x_best = s[:]                       # set the best solution to be the best one
+            f_best = evaluate(s)                # and the best value
+            x_curr = s[:]                       # make it the current one too
+            f_curr = evaluate (s)               # make it the curr vale
+        
+        else:
+            delta = evaluate(x_curr) - evaluate(s)      # if not find the difference
+            eta = myPRNG.random()                       # set eta to be a random number
+            
+            if eta < math.exp(-1*delta/T):              # if eta is less than the function
+                x_curr = s[:]                           # make the move--this is completely random
+                f_curr = evaluate(s)                    # make the value move
+        
+        m = m+1             # increment m
+
+print "Final Temperature", T
+print "Best value found", f_best
+print "Best comb", x_best
+
+
+
+    
