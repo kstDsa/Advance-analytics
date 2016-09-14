@@ -1,0 +1,4 @@
+								
+	 	                       Global Best*	              Ring	        		 Star	
+	size of swarm	              15	100	           15	         100	          15	        100	
+	average Schwefel value	  33767.14436	32403.24444	35761.68327	34842.44274	37788.82837	37980.53542	
