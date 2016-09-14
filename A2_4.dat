@@ -1,0 +1,25 @@
+set goods:= A B C D;
+
+set silos:= S1 S2 S3 S4 S5 S6 S7;
+
+param loadcost:
+		S1	S2	S3	S4	S5	S6	S7 :=
+	A	1	2	2	3	4	5	5	
+	B	2	3	3	3	1	5	5
+	C	4	4	3	2	1	5	5
+	D	1	1	2	2	3	5	5;
+
+param capacity:=
+	S1	25
+	S2	25
+	S3	40
+	S4	60
+	S5	80
+	S6	100
+	S7	100;
+
+param supply :=
+	A	75
+	B	50
+	C	25
+	D	80;

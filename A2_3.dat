@@ -1,0 +1,49 @@
+set NODES :=  	new c1 c2 c3 c4 c5
+				d1 d2 d3 d4 d5 ex; 
+
+set ARCS := 	(new,*) c1 c2 c3 c4 c5 ex
+				(c1,d1) (c2,d2) (c3,d3) (c4,d4) (c5,d5)
+				(d1, *) c2 c3 c4 d2 ex
+				(d2, *) c3 c4 c5 d3 ex
+				(d3, *) c4 c5 d4 ex
+				(d4, *) c5 d5 ex
+				(d5,ex);
+
+param b :=
+	new 2305
+	ex	-2305;
+
+param:        		c   	l		u			:=
+		[new,ex]	0		0		infinity
+		[new,c1]	8		0		400
+		[new,c2] 	8		0		375
+		[new,c3] 	8		0		515
+		[new,c4] 	8		0		395
+		[new,c5] 	8		0		620
+		[c1,d1] 	0		400		400
+		[d1,c2]		3.75	0		infinity
+		[d1,c3] 	1.25	0		infinity
+		[d1,c4] 	0.75	0		infinity
+		[d1,d2] 	0		0		infinity
+		[c2,d2] 	0		375		375
+		[d2,c3] 	3.75	0		infinity
+		[d2,c4]		1.25	0		infinity
+		[d2,c5] 	0.75	0		infinity
+		[d2,d3] 	0		0		infinity
+		[c3,d3] 	0		515		515
+		[d3,c4] 	3.75	0		infinity
+		[d3,c5] 	1.25	0		infinity
+		[d3,d4]		0		0		infinity
+		[c4,d4] 	0		395		395
+		[d4,c5] 	3.75	0		infinity
+		[d4,d5] 	0		0		infinity
+		[c5,d5] 	0		620		620
+		[d5,ex]		0		0		infinity
+		[d4,ex]		0		0		infinity
+		[d3,ex]		0		0		infinity
+		[d2,ex]		0		0		infinity
+		[d1,ex]		0		0		infinity;
+
+
+
+

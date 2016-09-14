@@ -1,0 +1,39 @@
+reset;
+options solver cplex;
+# set two node types. goods, and silos
+set goods; 
+set silos; 
+
+param loadcost{goods, silos} >= 0;	#Cost to send each good to each silo
+param capacity{silos} >= 0;			#Max goods that can be stored in each silo
+param supply{goods} >= 0;			#Total supply of each commodity
+param M:= 1000;						#An arbitrarily large number to force silos 
+									#to hold only one type of good
+
+var x {goods, silos} >= 0;			#interactions between silos and commodities
+var y {goods, silos} >= 0, binary;	#Decision vars for silos whold which goods
+
+minimize cost:						#Objective minimization function
+sum{i in goods, j in silos} loadcost[i,j]*x[i,j];
+
+#Force only one type commodity per silo.
+subject to segregated_goods {j in silos}:
+sum {i in goods} y[i,j] <= 1;
+
+#sum of supply = sum of goods stored
+subject to flow_balance {i in goods}:
+sum {j in silos} x[i,j] = supply[i];
+
+#Silos can't hold more than their capacity
+subject to silo_capacity {j in silos}:
+sum{i in goods}x[i,j] <= capacity[j];
+
+#Not sure why I need this, but the function doesn't work without it.
+subject to technical_constraint{i in goods, j in silos}:
+x[i,j] <= M*y[i,j];
+
+
+data A2_4.dat;
+
+solve;
+display x;

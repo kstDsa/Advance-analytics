@@ -1,0 +1,26 @@
+reset;
+options solver cplex;
+
+set songs;
+
+param song_lengths{songs};
+
+var x >= 0;
+var y {songs} >= 0, binary;
+var z {songs} >= 0, binary;
+
+minimize length: x;
+
+subject to side_a:
+sum {i in songs} song_lengths[i]*y[i] <= x;
+
+subject to side_b:
+sum {i in songs} song_lengths[i]*z[i] <= x;
+
+subject to segregated {i in songs}:
+y[i] + z[i] = 1;
+
+data A2_5.dat;
+
+solve;
+display x, y, z;
